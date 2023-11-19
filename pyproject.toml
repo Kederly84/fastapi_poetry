@@ -10,6 +10,8 @@ packages = [{include = "fastapi_learning", from = "src"}]
 python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.104.1"}
 
+[tool.poetry.scripts]
+start = "fastapi_learning.app.main:main"
 
 [build-system]
 requires = ["poetry-core"]
