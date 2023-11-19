@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "fastapi-learning"
+version = "0.1.0"
+description = ""
+authors = ["Maksimov <amaksimov744@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fastapi_learning", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.104.1"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
