@@ -7,11 +7,16 @@ readme = "README.md"
 packages = [{include = "fastapi_learning", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.9"
 fastapi = {extras = ["all"], version = "^0.104.1"}
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.7.0"
+flake8 = "^6.1.0"
+
+
 [tool.poetry.scripts]
-start = "fastapi_learning.app.main:main"
+start = "src.fastapi_learning.app.main:main"
 
 [build-system]
 requires = ["poetry-core"]
