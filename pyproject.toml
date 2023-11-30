@@ -9,6 +9,10 @@ packages = [{include = "fastapi_learning", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 fastapi = {extras = ["all"], version = "^0.104.1"}
+sqlalchemy = "^2.0.23"
+alembic = "^1.12.1"
+asyncpg = "^0.29.0"
+greenlet = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.0"
