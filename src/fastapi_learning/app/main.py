@@ -6,9 +6,15 @@ from fastapi import FastAPI, Query, Depends
 from pydantic import BaseModel
 from uvicorn import run
 
+from fastapi_learning.app.bookings.router import router as router_bookings
+from fastapi_learning.app.users.router import router as router_users
+
 app = FastAPI()
+app.include_router(router_bookings)
+app.include_router(router_users)
 
 
+# print(Base.metadata.tables)
 class Hotel(BaseModel):
     hotel: str
     location: str
@@ -54,15 +60,15 @@ def get_hotels(
 #     return req
 
 
-class Booking(BaseModel):
-    room_id: int
-    date_from: date
-    date_to: date
-
-
-@app.post('/booking')
-def add_booking(booking: Booking):
-    return HTTPStatus.OK
+# class Booking(BaseModel):
+#     room_id: int
+#     date_from: date
+#     date_to: date
+#
+#
+# @app.post('/booking')
+# def add_booking(booking: Booking):
+#     return HTTPStatus.OK
 
 
 def main():

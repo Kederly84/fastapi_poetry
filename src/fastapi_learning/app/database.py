@@ -1,6 +1,8 @@
+from datetime import date
 from pathlib import Path
 
 import dotenv
+from sqlalchemy import BigInteger, ForeignKey, Date, Computed
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     AsyncSession,
@@ -33,6 +35,9 @@ async_session_maker = async_sessionmaker(
     class_=AsyncSession
 )
 
+
+# class Base(DeclarativeBase):
+#     pass
 
 class Base(DeclarativeBase):
     pass

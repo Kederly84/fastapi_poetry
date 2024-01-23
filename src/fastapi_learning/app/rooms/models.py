@@ -12,9 +12,8 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
 from fastapi_learning.app.database import Base
-if typing.TYPE_CHECKING:
-    from fastapi_learning.app.hotels.models import Hotels
-    from fastapi_learning.app.bookings.models import Bookings
+
+
 
 
 # class Rooms(Base):
@@ -47,5 +46,6 @@ class Rooms(Base):
     services: Mapped[list[str]] = mapped_column(JSON, nullable=True)
     quantity: Mapped[int] = mapped_column(nullable=False)
     image_id: Mapped[int]
-    hotel: Mapped['Hotels'] = relationship(back_populates='room', cascade='all, delete')
-    booking: Mapped['Bookings'] = relationship(back_populates='room')
+    hotel: Mapped["Hotels"] = relationship(back_populates="rooms")
+    bookings: Mapped["Bookings"] = relationship(back_populates="room")
+

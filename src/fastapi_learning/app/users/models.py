@@ -1,13 +1,7 @@
-import typing
-
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from fastapi_learning.app.database import Base
-
-
-if typing.TYPE_CHECKING:
-    from fastapi_learning.app.bookings.models import Bookings
 
 
 # class Users(Base):
@@ -25,4 +19,4 @@ class Users(Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     email: Mapped[str] = mapped_column(nullable=False)
     hashed_password: Mapped[str] = mapped_column(nullable=False)
-    booking: Mapped['Bookings'] = relationship(back_populates='user')
+    bookings: Mapped[list["Bookings"]] = relationship(back_populates="user")

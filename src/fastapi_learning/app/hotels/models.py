@@ -4,8 +4,6 @@ from sqlalchemy import Column, Integer, String, JSON, BigInteger
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from fastapi_learning.app.database import Base
-if typing.TYPE_CHECKING:
-    from fastapi_learning.app.rooms.models import Rooms
 
 
 # class Hotels(Base):
@@ -29,4 +27,5 @@ class Hotels(Base):
     services: Mapped[list[str]] = mapped_column(JSON)
     rooms_quantity: Mapped[int] = mapped_column(nullable=False)
     image_id: Mapped[int]
-    rooms: Mapped['Rooms'] = relationship(back_populates='hotel')
+    rooms: Mapped[list["Rooms"]] = relationship(back_populates="hotel")
+
