@@ -76,7 +76,10 @@ async def add_booking(room_id: int,
 
 
 @router.delete('/{booking_id}/delete_booking')
-async def delete_booking(booking_id: int, user: Users = Depends(get_current_user)):
+async def delete_booking(
+        booking_id: int,
+        user: Users = Depends(get_current_user)
+        ) -> Union[SNewBooking, str]:
     try:
         user_id = int(user.id)
     except AttributeError:
