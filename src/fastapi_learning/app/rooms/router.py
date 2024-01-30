@@ -1,8 +1,10 @@
-from fastapi import APIRouter
-from sqlalchemy import select
+from datetime import date
+from typing import List
 
-from fastapi_learning.app.rooms.models import Rooms
-from fastapi_learning.app.database import async_session_maker
+from fastapi import APIRouter
+
+from fastapi_learning.app.rooms.dao import RoomsDAO
+from fastapi_learning.app.rooms.schemas import SRoomInfo, SRoom
 
 router = APIRouter(
     prefix='/rooms',
@@ -11,10 +13,12 @@ router = APIRouter(
 
 
 @router.get('')
-async def get_users():
-    async with async_session_maker() as session:
-        query = select(Rooms)
+async def get_rooms() -> List[SRoom]:
+    rooms = await RoomsDAO.find_all()
+    return rooms
 
-        result = await session.execute(query)
-        result = result.mappings().all()
-        return result
+
+@router.get('/{hotel_id}/rooms')
+async def get_rooms_by_hotel_id(hotel_id: int, date_from: date, date_to: date) -> List[SRoomInfo]:
+    rooms = await RoomsDAO.find_by_hotel(hotel_id=hotel_id, date_from=date_from, date_to=date_to)
+    return rooms

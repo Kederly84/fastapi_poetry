@@ -1,6 +1,4 @@
-import typing
-
-from sqlalchemy import Column, Integer, String, JSON, BigInteger
+from sqlalchemy import JSON, BigInteger
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from fastapi_learning.app.database import Base
@@ -28,4 +26,3 @@ class Hotels(Base):
     rooms_quantity: Mapped[int] = mapped_column(nullable=False)
     image_id: Mapped[int]
     rooms: Mapped[list["Rooms"]] = relationship(back_populates="hotel")
-

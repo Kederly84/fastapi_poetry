@@ -1,19 +1,15 @@
-import typing
-
 from sqlalchemy import (
-    Column,
     ForeignKey,
-    String,
-    Text,
-    Integer,
     JSON,
     BigInteger)
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-
 from fastapi_learning.app.database import Base
 
+import typing
 
+if typing.TYPE_CHECKING:
+    from fastapi_learning.app.hotels.models import Hotels
 
 
 # class Rooms(Base):
@@ -48,4 +44,3 @@ class Rooms(Base):
     image_id: Mapped[int]
     hotel: Mapped["Hotels"] = relationship(back_populates="rooms")
     bookings: Mapped["Bookings"] = relationship(back_populates="room")
-

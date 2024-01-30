@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, delete
 
 from fastapi_learning.app.database import async_session_maker, Base
 
@@ -45,3 +45,14 @@ class BaseDAO:
             result = result.mappings().first()
             await session.commit()
             return result
+
+    @classmethod
+    async def delete(cls, **kwargs):
+        async with async_session_maker() as session:
+            stmt = delete(cls.model).filter_by(**kwargs).returning(cls.model.__table__.columns)
+            result = await session.execute(stmt)
+            result = result.mappings().first()
+            await session.commit()
+            return result
+
+
