@@ -12,7 +12,12 @@ class BookingDAO(BaseDAO):
     model = Bookings
 
     @classmethod
-    async def add(cls, room_id: int, user_id: int, date_from: date, date_to: date):
+    async def add(
+            cls,
+            room_id: int,
+            user_id: int,
+            date_from: date,
+            date_to: date):
         """
         In code release this example SQL expressions
         WITH booked_rooms AS (
@@ -44,7 +49,8 @@ class BookingDAO(BaseDAO):
                 )
             ).cte('booked_rooms')
             get_rooms_left = select(
-                (Rooms.quantity - func.count(booked_rooms.c.room_id)).label('rooms_left')
+                (Rooms.quantity - func.count(booked_rooms.c.room_id)
+                 ).label('rooms_left')
             ).select_from(Rooms).join(
                 booked_rooms, booked_rooms.c.room_id == Rooms.id, isouter=True
             ).where(
@@ -54,7 +60,10 @@ class BookingDAO(BaseDAO):
                 booked_rooms.c.room_id
             )
             # This code just print SQL expression from SQLAlchemy
-            print(get_rooms_left.compile(engine, compile_kwargs={"literal_binds": True}))
+            print(get_rooms_left.compile(engine,
+                                         compile_kwargs={"literal_binds": True}
+                                         )
+                  )
             rooms_left = await session.execute(get_rooms_left)
             rooms_left: int = rooms_left.scalar()
             print(rooms_left)

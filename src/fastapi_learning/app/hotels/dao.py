@@ -75,7 +75,7 @@ class HotelDAO(BaseDAO):
             return hotels
 
     @classmethod
-    async def find_all(cls, location: str, date_from: date, date_to: date):
+    async def find_all_by_location(cls, location: str, date_from: date, date_to: date):
         """
         WITH booked_rooms AS (
             SELECT room_id, COUNT(room_id) AS rooms_booked

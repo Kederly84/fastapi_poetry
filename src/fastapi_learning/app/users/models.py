@@ -1,7 +1,11 @@
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import relationship, mapped_column, Mapped
+import typing
 
 from fastapi_learning.app.database import Base
+
+if typing.TYPE_CHECKING:
+    from fastapi_learning.app.bookings.models import Bookings
 
 
 # class Users(Base):

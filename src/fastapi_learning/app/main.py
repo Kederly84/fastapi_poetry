@@ -1,20 +1,41 @@
-from datetime import date
-from typing import Annotated, Optional
+from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI, Query, Depends
-from pydantic import BaseModel
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 from uvicorn import run
 
 from fastapi_learning.app.bookings.router import router as router_bookings
-from fastapi_learning.app.users.router import router as router_users
 from fastapi_learning.app.hotels.router import router as router_hotels
+from fastapi_learning.app.images.router import router as router_images
+from fastapi_learning.app.pages.router import router as router_pages
 from fastapi_learning.app.rooms.router import router as router_rooms
+from fastapi_learning.app.users.router import router as router_users
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    redis = aioredis.from_url("redis://localhost")
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+
+BASE_DIR = Path(__file__).resolve().parent
+
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
 app.include_router(router_bookings)
 app.include_router(router_users)
 app.include_router(router_hotels)
 app.include_router(router_rooms)
+app.include_router(router_pages)
+app.include_router(router_images)
 
 
 # print(Base.metadata.tables)
@@ -56,6 +77,29 @@ app.include_router(router_rooms)
 #     }
 #     hotel = Hotel(**res)
 #     return hotel
+
+
+# @app.on_event("startup")
+# async def startup():
+#     redis = aioredis.from_url("redis://localhost")
+#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+
+origins = [
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_headers=["Content-Type",
+                   "Set-Cookie",
+                   "Authorization",
+                   "Access-Control-Allow-Headers",
+                   "Access-Control-Allow-Origins"]
+)
 
 
 def main():

@@ -1,7 +1,10 @@
+import asyncio
 from datetime import date
 from typing import List
 
 from fastapi import APIRouter
+from fastapi_cache.decorator import cache
+from pydantic import TypeAdapter
 
 from fastapi_learning.app.hotels.dao import HotelDAO
 from fastapi_learning.app.hotels.schemas import SHotelsByLocation, SHotels
@@ -15,7 +18,9 @@ router = APIRouter(
 
 
 @router.get('')
+@cache(expire=20)
 async def get_hotels() -> List[SHotels]:
+    await asyncio.sleep(3)
     hotels = await HotelDAO.find_all()
     return hotels
 
@@ -29,7 +34,7 @@ async def get_hotels_by_location_and_time(
         raise DateFromCannotBeAfterDateTo
     if (date_to - date_from).days > 31:
         raise CannotBookHotelForLongPeriod
-    hotels = await HotelDAO.find_all(location, date_from, date_to)
+    hotels = await HotelDAO.find_all_by_location(location, date_from, date_to)
     return hotels
 
 
