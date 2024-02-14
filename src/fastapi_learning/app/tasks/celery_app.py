@@ -7,3 +7,6 @@ celery_app = Celery(
 )
 
 
+def main():
+    argv = ['worker', '--loglevel=INFO', '-E']
+    celery_app.worker_main(argv)

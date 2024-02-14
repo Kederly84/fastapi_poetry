@@ -56,8 +56,8 @@ services:
     container_name: rabbitMQ
     image: rabbitmq:3.10.7-management
     ports:
-      - 15672:15672
-      - 5672:5672
+      - "15672:15672"
+      - "5672:5672"
     networks:
       - my_app
     healthcheck:

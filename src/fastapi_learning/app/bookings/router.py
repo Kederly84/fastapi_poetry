@@ -2,10 +2,12 @@ from datetime import date
 from typing import List, Union
 
 from fastapi import APIRouter, Depends
+from pydantic import parse_obj_as
 
 from fastapi_learning.app.bookings.dao import BookingDAO
 from fastapi_learning.app.bookings.schemas import SBooking, SBookingInfo, SNewBooking
 from fastapi_learning.app.exceptions import RoomCannotBeBooked, WrongTokenException, CannotDeleteBookingException
+from fastapi_learning.app.tasks.tasks import send_booking_confirmation_email
 from fastapi_learning.app.users.dependencies import get_current_user
 from fastapi_learning.app.users.models import Users
 
@@ -69,7 +71,9 @@ async def add_booking(room_id: int,
         date_to=date_to
     )
     if booking:
-        print(booking)
+        booking_dict = parse_obj_as(SBooking, booking).dict()
+        email_to = user.email
+        send_booking_confirmation_email.delay(booking_dict, email_to)
         return booking
     else:
         raise RoomCannotBeBooked

@@ -29,8 +29,7 @@ flower = "^2.0.1"
 
 [tool.poetry.scripts]
 start = "src.fastapi_learning.app.main:main"
-#todo: переписать скрипт, чтобы он работал
-celery_tasks = "celery -A src.fastapi_learning.app.tasks.celery_app:celery_app worker --loglevel=INFO --pool=solo"
+tasks = "src.fastapi_learning.app.tasks.celery_app:main"
 
 [build-system]
 requires = ["poetry-core"]
