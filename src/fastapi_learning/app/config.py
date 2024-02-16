@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
     DRIVER: str
+    SYNC_DRIVER: str
     SECRET_KEY: str
     ALGORITHM: str
 
@@ -21,6 +22,12 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         return (f'{self.DRIVER}://{self.POSTGRES_USER}:'
+                f'{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:'
+                f'{self.POSTGRES_PORT}/{self.POSTGRES_DB}')
+
+    @property
+    def sync_driver(self) -> str:
+        return (f'{self.SYNC_DRIVER}://{self.POSTGRES_USER}:'
                 f'{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:'
                 f'{self.POSTGRES_PORT}/{self.POSTGRES_DB}')
 

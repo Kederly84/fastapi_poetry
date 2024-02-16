@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -17,11 +18,26 @@ from fastapi_learning.app.rooms.router import router as router_rooms
 from fastapi_learning.app.users.router import router as router_users
 
 
+# Пример асинхронной функции, которая выполняется постоянно и
+# может блокировать запуск приложения
+async def get_example_async():
+    while True:
+        print("Hello World!")
+        await asyncio.sleep(5)
+        print("Goodbye!")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     redis = aioredis.from_url("redis://localhost")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    # Код ниже не будет работать - приложение не запустится
+    # await get_example_async()
+    # Вместо этого следует использовать код ниже, без await
+    # asyncio.create_task(get_example_async())
+    print('Приложение запущено')
     yield
+    print('Приложение остановлено')
 
 
 app = FastAPI(lifespan=lifespan)
@@ -36,7 +52,6 @@ app.include_router(router_hotels)
 app.include_router(router_rooms)
 app.include_router(router_pages)
 app.include_router(router_images)
-
 
 # print(Base.metadata.tables)
 # class Hotel(BaseModel):

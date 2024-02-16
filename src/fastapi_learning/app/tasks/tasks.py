@@ -1,12 +1,11 @@
+import smtplib
 from pathlib import Path
 
+from PIL import Image
 from pydantic import EmailStr
-import smtplib
 
 from fastapi_learning.app.config import settings
 from fastapi_learning.app.tasks.celery_app import celery_app
-from PIL import Image
-
 from fastapi_learning.app.tasks.email_templates import create_booking_confirmation_template
 
 
