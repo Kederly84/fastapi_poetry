@@ -58,3 +58,6 @@ class Bookings(Base):
             total_cost=self.total_cost,
             total_days=self.total_days
         )
+
+    def __str__(self):
+        return f"BookingData: {self.id}, {self.date_from}, {self.date_to}"

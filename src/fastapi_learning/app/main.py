@@ -8,9 +8,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from sqladmin import Admin
 from uvicorn import run
 
+from fastapi_learning.app.admin.views import UserAdmin, BookingsAdmin, HotelsAdmin, RoomsAdmin
 from fastapi_learning.app.bookings.router import router as router_bookings
+from fastapi_learning.app.database import engine
 from fastapi_learning.app.hotels.router import router as router_hotels
 from fastapi_learning.app.images.router import router as router_images
 from fastapi_learning.app.pages.router import router as router_pages
@@ -52,6 +55,13 @@ app.include_router(router_hotels)
 app.include_router(router_rooms)
 app.include_router(router_pages)
 app.include_router(router_images)
+
+admin = Admin(app, engine)
+
+admin.add_view(UserAdmin)
+admin.add_view(BookingsAdmin)
+admin.add_view(HotelsAdmin)
+admin.add_view(RoomsAdmin)
 
 # print(Base.metadata.tables)
 # class Hotel(BaseModel):

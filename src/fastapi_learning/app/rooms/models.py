@@ -43,4 +43,7 @@ class Rooms(Base):
     quantity: Mapped[int] = mapped_column(nullable=False)
     image_id: Mapped[int]
     hotel: Mapped["Hotels"] = relationship(back_populates="rooms")
-    bookings: Mapped["Bookings"] = relationship(back_populates="room")
+    bookings: Mapped[list["Bookings"]] = relationship(back_populates="room")
+
+    def __str__(self):
+        return f'{self.name} - {self.description}'

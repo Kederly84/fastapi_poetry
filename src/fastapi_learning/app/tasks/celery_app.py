@@ -47,5 +47,3 @@ def tasks():
 def periodic_task():
     argv = ['worker', '--loglevel=INFO', '-B']
     celery_app.worker_main(argv)
-
-

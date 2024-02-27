@@ -13,6 +13,7 @@ from fastapi_learning.app.users.models import Users
 import dotenv
 import os
 from pathlib import Path
+from fastapi_learning.app.config import settings
 
 import sys
 
@@ -25,8 +26,8 @@ dotenv.load_dotenv(BASE_DIR / '.env')
 # access to the values within the .ini file in use.
 config = context.config
 
-DATABASE_URL = f'{os.getenv("DRIVER")}://{os.getenv("POSTGRES_USER")}:{os.getenv("POSTGRES_PASSWORD")}@{os.getenv("HOST")}:{os.getenv("PORT")}/{os.getenv("POSTGRES_DB")}'
-
+# DATABASE_URL = f'{os.getenv("DRIVER")}://{os.getenv("POSTGRES_USER")}:{os.getenv("POSTGRES_PASSWORD")}@{os.getenv("HOST")}:{os.getenv("PORT")}/{os.getenv("POSTGRES_DB")}'
+DATABASE_URL = settings.database_url
 config.set_main_option('sqlalchemy.url', f'{DATABASE_URL}?async_fallback=True')
 
 # Interpret the config file for Python logging.
