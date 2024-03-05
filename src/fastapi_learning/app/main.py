@@ -11,6 +11,7 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 from uvicorn import run
 
+from fastapi_learning.app.admin.auth import authentication_backend
 from fastapi_learning.app.admin.views import UserAdmin, BookingsAdmin, HotelsAdmin, RoomsAdmin
 from fastapi_learning.app.bookings.router import router as router_bookings
 from fastapi_learning.app.database import engine
@@ -56,7 +57,7 @@ app.include_router(router_rooms)
 app.include_router(router_pages)
 app.include_router(router_images)
 
-admin = Admin(app, engine)
+admin = Admin(app, engine, authentication_backend=authentication_backend)
 
 admin.add_view(UserAdmin)
 admin.add_view(BookingsAdmin)

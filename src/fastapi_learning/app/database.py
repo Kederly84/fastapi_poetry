@@ -1,8 +1,8 @@
-from datetime import date
+
 from pathlib import Path
 
 import dotenv
-from sqlalchemy import BigInteger, ForeignKey, Date, Computed
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
     AsyncSession,
@@ -25,9 +25,15 @@ dotenv.load_dotenv(BASE_DIR / '.env')
 #         password=settings.POSTGRES_PASSWORD,
 #         port=settings.PORT
 #     )
-# )
+#
+if settings.MODE == 'TEST':
+    DATABASE_URL = settings.test_database_url
+    DATABASE_PARAMS = {'poolclass': NullPool}
+else:
+    DATABASE_URL = settings.database_url
+    DATABASE_PARAMS = {}
 
-engine = create_async_engine(settings.database_url)
+engine = create_async_engine(DATABASE_URL, **DATABASE_PARAMS)
 
 async_session_maker = async_sessionmaker(
     bind=engine,
